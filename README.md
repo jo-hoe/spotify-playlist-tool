@@ -1,5 +1,7 @@
 # CSV to Spotify Playlist
 
+🚧 Work in progress
+
 Small script that take a csv as input and creates a playlist from the entries.
 
 ## Prerequisites to run locally
