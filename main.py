@@ -5,9 +5,11 @@ import logging
 import argparse
 from datetime import datetime
 
+from tqdm import tqdm
+from dotenv import load_dotenv
+
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-from dotenv import load_dotenv
 
 
 def parse_arguments() -> tuple[str, str]:
@@ -37,12 +39,8 @@ def create_playlist(sp: spotipy.Spotify, playlist_name: str) -> str:
     return playlist['id']
 
 
-def search_track(sp: spotipy.Spotify, artist: str, title: str, album: str, release_year: str) -> str:
+def search_track(sp: spotipy.Spotify, artist: str, title: str) -> str:
     query = f"artist:{artist} track:{title}"
-    if album:
-        query += f" album:{album}"
-    if release_year:
-        query += f" year:{release_year}"
 
     results = sp.search(q=query, type='track', limit=1)
     tracks = results.get('tracks', {}).get('items', [])
@@ -53,14 +51,14 @@ def search_track(sp: spotipy.Spotify, artist: str, title: str, album: str, relea
 
 
 def add_tracks_to_playlist(sp: spotipy.Spotify, playlist_id: str, tracks: csv.DictReader) -> None:
-    for row in tracks.values():
+    for row in tqdm(tracks.values(), desc="adding tracks to playlist"):
         track_id = search_track(
-            sp, row['artist'], row['title'], row.get('album', ''), row.get('release_year', ''))
+            sp, row['artist'], row['title'])
         if track_id:
             sp.playlist_add_items(playlist_id, [track_id])
         else:
             logging.warning(
-                f'Track {row["artist"]} - {row["title"]} not found.')
+                f'Track "{row["title"]}" from artist "{row["artist"]}" not found - skipping.')
 
 
 def read_csv_file(file_path) -> csv.DictReader:
@@ -70,9 +68,6 @@ def read_csv_file(file_path) -> csv.DictReader:
     The CSV file is expected to have at least the following headers/columns:
     - artist
     - title
-    And optionally:
-    - album
-    - release_year
     """
     data = {}
     with open(file_path, mode='r', encoding='utf-8') as file:
@@ -100,7 +95,7 @@ def main():
     data = read_csv_file(input_file)
 
     # setup Spotify API
-    scope = "user-library-read"
+    scope = "user-library-read,playlist-read-private,playlist-modify-private,playlist-modify-public"
     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
     # create or get playlist
