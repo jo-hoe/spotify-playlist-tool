@@ -22,7 +22,7 @@ def parse_arguments() -> tuple[str, str]:
     return args.input_file, args.playlist_name
 
 
-def get_existing_playlist_id(sp: spotipy.Spotify, playlist_name: str) -> str:
+def get_playlist_id(sp: spotipy.Spotify, playlist_name: str) -> str:
     playlists = sp.current_user_playlists()
     for playlist in playlists['items']:
         if playlist['name'] == playlist_name:
@@ -35,17 +35,6 @@ def create_playlist(sp: spotipy.Spotify, playlist_name: str) -> str:
     playlist = sp.user_playlist_create(
         sp.me()['id'], playlist_name, public=False)
     return playlist['id']
-
-
-def get_playlist_id(sp: spotipy.Spotify, playlist_name: str):
-    if playlist_name == '':
-        playlist_id = create_playlist(
-            sp, f'playlist_{datetime.now().strftime("%Y%m%d%H%M%S")}')
-    else:
-        playlist_id = get_playlist_id(sp, playlist_name)
-        if playlist_id == '':
-            print(
-                f'Playlist {playlist_name} not found. Either leave the playlist name empty or provide an existing playlist name.')
 
 
 def search_track(sp: spotipy.Spotify, artist: str, title: str, album: str, release_year: str) -> str:
@@ -100,18 +89,34 @@ def read_csv_file(file_path) -> csv.DictReader:
 
 
 def main():
+    # parse input parameters
     load_dotenv()
     input_file, playlist_name = parse_arguments()
 
+    # read CSV file
     if not os.path.exists(input_file):
         print(f'File {input_file} does not exist.')
         return
     data = read_csv_file(input_file)
 
+    # setup Spotify API
     scope = "user-library-read"
     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
-    playlist_id = get_playlist_id(sp, playlist_name)
+    # create or get playlist
+    if playlist_name == '':
+        playlist_id = create_playlist(
+            sp, f'playlist_{datetime.now().strftime("%Y%m%d%H%M%S")}')
+    else:
+        playlist_id = get_playlist_id(sp, playlist_name)
+        if playlist_id == '':
+            print(
+                f'Playlist {playlist_name} not found. Either leave the playlist name empty or provide an existing playlist name.')
+    if playlist_id == '':
+        return
+
+    # add tracks to playlist    
+    add_tracks_to_playlist(sp, playlist_id, data)
 
 
 if __name__ == '__main__':
