@@ -50,15 +50,18 @@ def search_track(sp: spotipy.Spotify, artist: str, title: str) -> str:
     return ''
 
 
-def add_tracks_to_playlist(sp: spotipy.Spotify, playlist_id: str, tracks: csv.DictReader) -> None:
+def add_tracks_to_playlist(sp: spotipy.Spotify, playlist_id: str, tracks: csv.DictReader) -> list[dict]:
+    not_added_tracks = []
+
     for row in tqdm(tracks.values(), desc="adding tracks to playlist"):
         track_id = search_track(
             sp, row['artist'], row['title'])
         if track_id:
             sp.playlist_add_items(playlist_id, [track_id])
         else:
-            logging.warning(
-                f'Track "{row["title"]}" from artist "{row["artist"]}" not found - skipping.')
+            not_added_tracks.append(row)
+
+    return not_added_tracks
 
 
 def read_csv_file(file_path) -> csv.DictReader:
@@ -110,8 +113,21 @@ def main():
     if playlist_id == '':
         return
 
-    # add tracks to playlist    
-    add_tracks_to_playlist(sp, playlist_id, data)
+    # add tracks to playlist
+    not_added_tracks = add_tracks_to_playlist(sp, playlist_id, data)
+
+    # store not added tracks in a file
+    if not_added_tracks:
+        report_file_name = 'not_added_tracks.csv'
+
+        logging.warning(
+            f'{len(not_added_tracks)} tracks could not be added to the playlist. See file {report_file_name} for details.')
+        
+        with open(report_file_name, mode='w', encoding='utf-8') as file:
+            writer = csv.DictWriter(
+                file, fieldnames=not_added_tracks[0].keys())
+            writer.writeheader()
+            writer.writerows(not_added_tracks)
 
 
 if __name__ == '__main__':
