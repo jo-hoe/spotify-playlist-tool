@@ -119,14 +119,14 @@ def main():
     if not_added_tracks:
         report_file_name = 'not_added_tracks.csv'
 
-        logging.warning(
-            f'{len(not_added_tracks)} tracks could not be added to the playlist. See file {report_file_name} for details.')
-        
         with open(report_file_name, mode='w', encoding='utf-8') as file:
             writer = csv.DictWriter(
                 file, fieldnames=not_added_tracks[0].keys())
             writer.writeheader()
             writer.writerows(not_added_tracks)
+
+        logging.warning(
+            f'{len(not_added_tracks)} tracks could not be added to the playlist. Most likely they were not found. See file {report_file_name} for details.')
 
 
 if __name__ == '__main__':
