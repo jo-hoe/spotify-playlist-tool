@@ -60,6 +60,19 @@ options:
                         name of the playlist where the songs will be added (default is empty and a new playlist will be created)
 ```
 
+## CSV File
+
+It is expected that the csv file has the following format:
+
+```csv
+title,artist
+"Song 1","Artist 1"
+Song_2,Artist_2
+```
+
+The CSV can have more columns, but the script will only use the `title` and `artist`.
+Currently, the script requires that the separator is a `,`.
+
 ## Run with "make"
 
 The project is using `make`.
