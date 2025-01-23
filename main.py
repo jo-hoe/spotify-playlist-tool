@@ -104,12 +104,11 @@ def main():
     # create or get playlist
     if playlist_name == '':
         playlist_id = create_playlist(
-            sp, f'playlist_{datetime.now().strftime("%Y%m%d%H%M%S")}')
+            sp, f'csv_playlist_{datetime.now().strftime("%Y%m%d%H%M%S")}')
     else:
         playlist_id = get_playlist_id(sp, playlist_name)
         if playlist_id == '':
-            print(
-                f'Playlist {playlist_name} not found. Either leave the playlist name empty or provide an existing playlist name.')
+            playlist_id = create_playlist(sp, playlist_name)
     if playlist_id == '':
         return
 
