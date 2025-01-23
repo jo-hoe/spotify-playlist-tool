@@ -60,27 +60,7 @@ options:
                         name of the playlist where the songs will be added (default is empty and a new playlist will be created)
 ```
 
-## Prerequisites to run locally
-
-### Python
-
-This program is tested on python 3.13.
-
-### Run via plain Python commands
-
-Install the requirements by.
-
-```PowerShell
-pip install -r requirements.txt
-```
-
-and run the program by
-
-```PowerShell
-python main.py
-```
-
-### Run with "make"
+## Run with "make"
 
 The project is using `make`.
 `make` is not strictly required, but it helps and documents commonly used commands.

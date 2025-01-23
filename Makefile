@@ -12,7 +12,7 @@ venv:
 	python -m venv ${ROOT_DIR}.venv
 
 .PHONY: update
-update: ## install all dependencies
+update: ## install all dependencies in virtual env
 	git pull
 	${ROOT_DIR}.venv/Scripts/pip install -r requirements.txt
 
@@ -21,5 +21,5 @@ save-dependencies: ## save current dependencies
 	"${ROOT_DIR}.venv/Scripts/pip" list --not-required --format=freeze | grep -v "pip" > ${ROOT_DIR}requirements.txt
 	
 .PHONY: start 
-start: ## start crawler
+start: ## start program with default parameters
 	@${ROOT_DIR}.venv/Scripts/python ${ROOT_DIR}main.py
