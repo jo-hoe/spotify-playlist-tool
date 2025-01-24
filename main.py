@@ -101,10 +101,12 @@ def main():
     scope = "user-library-read,playlist-read-private,playlist-modify-private,playlist-modify-public"
     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
+    date_string = datetime.now().strftime("%Y%m%d%H%M%S")
+
     # create or get playlist
     if playlist_name == '':
         playlist_id = create_playlist(
-            sp, f'csv_playlist_{datetime.now().strftime("%Y%m%d%H%M%S")}')
+            sp, f'csv_playlist_{date_string}')
     else:
         playlist_id = get_playlist_id(sp, playlist_name)
         if playlist_id == '':
@@ -117,9 +119,9 @@ def main():
 
     # store not added tracks in a file
     if not_added_tracks:
-        report_file_name = 'not_added_tracks.csv'
+        report_file_name = f'not_added_tracks{date_string}.csv'
 
-        with open(report_file_name, mode='w', encoding='utf-8') as file:
+        with open(report_file_name, mode='w', encoding='utf-8', newline='') as file:
             writer = csv.DictWriter(
                 file, fieldnames=not_added_tracks[0].keys())
             writer.writeheader()
