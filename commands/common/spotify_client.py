@@ -65,6 +65,11 @@ def search_track(artist: str, title: str) -> str:
     return ''
 
 
-def playlist_add_items(playlist_id: str, track_ids: list[str]):
+def remove_all_tracks_with_id_from_playlist(playlist_id: str, track_ids: list[str]):
     client = get_spotify_client()
-    client.playlist_add_items(playlist_id, track_ids)
+    client.playlist_remove_all_occurrences_of_items(playlist_id, track_ids)
+
+
+def playlist_add_items(playlist_id: str, track_ids: list[str], item_position: int = None):
+    client = get_spotify_client()
+    client.playlist_add_items(playlist_id, track_ids, position=item_position)

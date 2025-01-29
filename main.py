@@ -1,14 +1,17 @@
 import argparse
+import logging
 from dotenv import load_dotenv
 
 from commands.base_command import Command
 from commands.export_playlist import ExportPlaylist
 from commands.import_playlist import ImportPlaylist
+from commands.deduplicate_playlist import DeduplicatePlaylist
 
 # List of available commands
 COMMANDS = [
     ImportPlaylist,
-    ExportPlaylist
+    ExportPlaylist,
+    DeduplicatePlaylist
 ]
 
 def parse_arguments() -> argparse.Namespace:
@@ -35,6 +38,9 @@ def create_command(command: str, args: argparse.Namespace) -> Command:
 
 
 def main():
+    # set log level to INFO
+    logging.basicConfig(level=logging.INFO)
+
     # parse input parameters
     load_dotenv()
     args = parse_arguments()
