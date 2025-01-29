@@ -34,6 +34,8 @@ class DeduplicatePlaylist(Command):
 
         # this can also be solved with less requests by using
         # basic arithmetic operations on the list of tracks
+        #
+        # current implementation is more slow and inefficient
         while True:
             tracks = get_tracks_in_playlist(playlist_id)
 
