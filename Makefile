@@ -21,5 +21,9 @@ save-dependencies: ## save current dependencies
 	"${ROOT_DIR}.venv/Scripts/pip" list --not-required --format=freeze | grep -v "pip" > ${ROOT_DIR}requirements.txt
 	
 .PHONY: start-playlist-import 
-start-playlist-import: ## start program with default parameters
+start-playlist-import: ## start import playlist with default settings
 	${ROOT_DIR}.venv/Scripts/python ${ROOT_DIR}main.py import_playlist
+
+.PHONY: get-all-commands
+get-all-commands: ## get all commands
+	@${ROOT_DIR}.venv/Scripts/python ${ROOT_DIR}main.py -h

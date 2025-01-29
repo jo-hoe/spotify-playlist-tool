@@ -5,14 +5,16 @@ Small script that allows to manage a Spotify playlist.
 Current functions:
 
 ```txt
-usage: main.py [-h] {import_playlist,export_playlist} ...
+usage: main.py [-h] {import_playlist,export_playlist,deduplicate_playlist} ...
 
 Allows to organize your Spotify playlists.
 
 positional arguments:
-  {import_playlist,export_playlist}
+  {import_playlist,export_playlist,deduplicate_playlist}
     import_playlist     Import tracks from a CSV file to a Spotify playlist.
     export_playlist     Export tracks from a Spotify playlist to a CSV file.
+    deduplicate_playlist
+                        Deduplicate tracks from a Spotify playlist and export them to a CSV file.
 
 options:
   -h, --help            show this help message and exit
