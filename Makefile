@@ -5,7 +5,7 @@ ROOT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 .DEFAULT_GOAL := start
 
 .PHONY: init 
-init: venv update-dependencies ## inital setup of project
+init: venv update ## inital setup of project
 
 .PHONY: venv
 venv:
@@ -20,6 +20,6 @@ update: ## install all dependencies in virtual env
 save-dependencies: ## save current dependencies
 	"${ROOT_DIR}.venv/Scripts/pip" list --not-required --format=freeze | grep -v "pip" > ${ROOT_DIR}requirements.txt
 	
-.PHONY: start 
+.PHONY: start-playlist-import 
 start: ## start program with default parameters
-	@${ROOT_DIR}.venv/Scripts/python ${ROOT_DIR}main.py
+	${ROOT_DIR}.venv/Scripts/python ${ROOT_DIR}main.py import_playlist

@@ -1,6 +1,29 @@
-# CSV to Spotify Playlist
+# Spotify Playlist Organization Tool
 
-Small script that takes a csv as input and creates a playlist from the entries.
+Small script that allows to manage a Spotify playlist.
+
+Current functions:
+
+```txt
+usage: main.py [-h] {import_playlist,export_playlist} ...
+
+Allows to organize your Spotify playlists.
+
+positional arguments:
+  {import_playlist,export_playlist}
+    import_playlist     Import tracks from a CSV file to a Spotify playlist.
+    export_playlist     Export tracks from a Spotify playlist to a CSV file.
+
+options:
+  -h, --help            show this help message and exit
+```
+
+You can get more information about the subcommands by running `-h` after the subcommand.
+Here is an example for the `import_playlist` subcommand:
+
+```bash
+python main.py import_playlist -h
+```
 
 ## Setup
 
