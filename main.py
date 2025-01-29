@@ -5,6 +5,11 @@ from commands.base_command import Command
 from commands.export_playlist import ExportPlaylist
 from commands.import_playlist import ImportPlaylist
 
+# List of available commands
+COMMANDS = [
+    ImportPlaylist,
+    ExportPlaylist
+]
 
 def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -13,25 +18,19 @@ def parse_arguments() -> argparse.Namespace:
     subparsers = parser.add_subparsers(dest='command', required=True)
 
     # Add subparser for each command
-    import_playlist_parser = subparsers.add_parser(
-        ImportPlaylist.get_command_name(), help=ImportPlaylist.get_help_text())
-    ImportPlaylist.add_arguments(import_playlist_parser)
-
-    export_playlist_parser = subparsers.add_parser(
-        ExportPlaylist.get_command_name(), help=ExportPlaylist.get_help_text())
-    ExportPlaylist.add_arguments(export_playlist_parser)
+    for command in COMMANDS:
+        subparser = subparsers.add_parser(
+            command.get_command_name(), help=command.get_help_text())
+        command.add_arguments(subparser)
 
     args = parser.parse_args()
     return args
 
 
 def create_command(command: str, args: argparse.Namespace) -> Command:
-    if command == ImportPlaylist.get_command_name():
-        return ImportPlaylist(args)
-    if command == ExportPlaylist.get_command_name():
-        return ExportPlaylist(args)
-
-    # Add more commands here as needed
+    for cmd in COMMANDS:
+        if command == cmd.get_command_name():
+            return cmd(args)
     raise ValueError(f'Unknown command: {command}')
 
 
