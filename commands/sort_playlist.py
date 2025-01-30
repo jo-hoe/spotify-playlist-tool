@@ -40,7 +40,7 @@ class SortPlaylist(Command):
 
     @staticmethod
     def get_help_text() -> str:
-        return 'Sorts a Spotify playlist by a given field by .'
+        return 'Sorts a playlist by a given field ('random' sorting is the default).'
 
     def execute(self):
         playlist_id = get_playlist_id(self.playlist_name)
