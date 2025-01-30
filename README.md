@@ -69,31 +69,6 @@ Alternatively, you can use the provided `make` commands to install the dependenc
 make init
 ```
 
-## Run
-
-### Plain Python
-
-You can run the script by running the following command in the terminal:
-
-```bash
-python main.py -i <my path to the csv>my.csv -p "My Playlist"
-```
-
-Ensure you are using a python installation that has the required packages installed.
-
-You can use the following parameters:
-
-```txt
-Manages a spotify playlist and allow to fill that list with titles defined in a CSV file.
-
-options:
-  -h, --help            show this help message and exit
-  -i INPUT_FILE, --input-file INPUT_FILE
-                        path to the csv file (default is set "music.csv")
-  -p PLAYLIST_NAME, --playlist-name PLAYLIST_NAME
-                        name of the playlist where the songs will be added (default is empty and a new playlist will be created)
-```
-
 ## CSV File
 
 It is expected that the csv file has the following format:
