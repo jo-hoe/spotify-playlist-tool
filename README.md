@@ -15,7 +15,7 @@ positional arguments:
     export_playlist     Export tracks from a Spotify playlist to a CSV file.
     deduplicate_playlist
                         Deduplicate tracks from a Spotify playlist and export them to a CSV file.
-    sort_playlist       Sorts a Spotify playlist by a given field by .
+    sort_playlist       Sorts a playlist by a given field ('random' sorting is the default).
 
 options:
   -h, --help            show this help message and exit
