@@ -6,12 +6,14 @@ from commands.base_command import Command
 from commands.export_playlist import ExportPlaylist
 from commands.import_playlist import ImportPlaylist
 from commands.deduplicate_playlist import DeduplicatePlaylist
+from commands.sort_playlist import SortPlaylist
 
 # List of available commands
 COMMANDS = [
     ImportPlaylist,
     ExportPlaylist,
-    DeduplicatePlaylist
+    DeduplicatePlaylist,
+    SortPlaylist
 ]
 
 def parse_arguments() -> argparse.Namespace:
