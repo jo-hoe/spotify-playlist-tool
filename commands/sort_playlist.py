@@ -11,10 +11,9 @@ class SortPlaylist(Command):
     COMMAND_NAME = 'sort_playlist'
 
     SORT_OPTIONS = {
-        'name': 'name',
-        'artist': 'artist',
-        'album': 'album',
-        'added_at': 'added_at',
+        'title': 'name',
+        'popularity': 'popularity',
+        'duration': 'duration_ms',
         'random': None
     }
 
@@ -51,14 +50,14 @@ class SortPlaylist(Command):
             logging.info(f"No tracks found in playlist {self.playlist_name}")
             return
 
-        sort_by = self.sort_by
+        sort_by = SortPlaylist.SORT_OPTIONS[self.sort_by]
         order = self.order
 
-        if sort_by == 'random':
+        if sort_by == None:
             random.shuffle(tracks)
         else:
             reverse = (order == 'desc')
-            tracks.sort(key=lambda x: x[sort_by], reverse=reverse)
+            tracks.sort(key=lambda x: x['track'][sort_by], reverse=reverse)
 
         track_ids = []
         for track in tracks:
@@ -67,4 +66,7 @@ class SortPlaylist(Command):
         remove_all_tracks_with_id_from_playlist(playlist_id, track_ids)
         playlist_add_items(playlist_id, track_ids)
 
-        logging.info(f"Playlist {self.playlist_name} sorted by {sort_by} in {order} order")
+        if sort_by == None:
+            logging.info(f"Playlist {self.playlist_name} sorted randomly")
+        else:
+            logging.info(f"Playlist {self.playlist_name} sorted by {sort_by} in {order} order")
