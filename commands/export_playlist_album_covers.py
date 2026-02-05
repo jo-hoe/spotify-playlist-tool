@@ -2,6 +2,7 @@ from argparse import ArgumentParser, Namespace
 import logging
 import os
 
+from tqdm import tqdm
 from requests import get
 
 from commands.base_command import Command
@@ -40,7 +41,7 @@ class ExportPlaylistAlbumCovers(Command):
 
         tracks = get_tracks_in_playlist(playlist_id)
         album_covers = {}
-        for track in tracks:
+        for track in tqdm(tracks, desc="Getting details of tracks in playlist"):
             album_id = track['track']['album']['id']
             album_name = track['track']['album']['name']
             key = f'{album_name}_spotifyid_{album_id}'
@@ -53,7 +54,7 @@ class ExportPlaylistAlbumCovers(Command):
         return "".join(c for c in name if c.isalnum() or c in (' ', '_', '-')).rstrip()
 
     def download_album_covers(self, album_covers: dict, directory_path: str):
-        for key, url in album_covers.items():
+        for key, url in tqdm(album_covers.items(), desc="Downloading album covers"):
             response = get(url)
             if response.status_code == 200:
                 sanitized_name = self.sanitize_filename(key)
