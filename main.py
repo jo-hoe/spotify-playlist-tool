@@ -7,14 +7,17 @@ from commands.export_playlist import ExportPlaylist
 from commands.import_playlist import ImportPlaylist
 from commands.deduplicate_playlist import DeduplicatePlaylist
 from commands.sort_playlist import SortPlaylist
+from commands.export_playlist_album_covers import ExportPlaylistAlbumCovers
 
 # List of available commands
 COMMANDS = [
     ImportPlaylist,
     ExportPlaylist,
     DeduplicatePlaylist,
-    SortPlaylist
+    SortPlaylist,
+    ExportPlaylistAlbumCovers
 ]
+
 
 def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
